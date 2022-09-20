@@ -19,7 +19,8 @@ docker run --rm \
   --mount type=bind,source="$SCRIPT_DIR/template",target=/root \
   "$REPOSITORY:$VERSION" \
   /opt/setup.sh \
-  osmo1lvrwcvrqlc5ktzp2c4t22xgkx29q3y83hdcc5d
+  osmo1lvrwcvrqlc5ktzp2c4t22xgkx29q3y83hdcc5d \
+  osmo1lwwr2junyeej0mts25rmjshqw2cw8w66etrpqq \
 
 sudo chmod -R g+rwx template/.osmosisd/
 sudo chmod -R a+rx template/.osmosisd/

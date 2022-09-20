@@ -18,7 +18,8 @@ docker run --rm \
   --mount type=bind,source="$SCRIPT_DIR/template",target=/root \
   "$REPOSITORY:$VERSION" \
   /opt/setup.sh \
-  wasm14qemq0vw6y3gc3u3e0aty2e764u4gs5lndxgyk
+  wasm14qemq0vw6y3gc3u3e0aty2e764u4gs5lndxgyk \
+  wasm1lwwr2junyeej0mts25rmjshqw2cw8w66mvpyle \
 
 sudo chmod -R g+rwx template/.wasmd/
 sudo chmod -R a+rx template/.wasmd/
