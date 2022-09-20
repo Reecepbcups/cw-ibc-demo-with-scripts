@@ -18,7 +18,7 @@ cd "$(dirname "$0")"
 
 export WASM_KEY="relayer"
 export WASM_ADDR="wasm1lwwr2junyeej0mts25rmjshqw2cw8w66mvpyle"
-export WASM_ARGS="--broadcast-mode sync --yes --output json --fees 50000ucosm --gas 2000000"
+export WASM_ARGS="--broadcast-mode sync --yes --output json --fees 50000ucosm --gas 3000000"
 
 
 
@@ -36,6 +36,20 @@ export INIT_MSG=`printf '{"cw1_code_id": %d}' $CODE_ID_CW1`
 HOST_TX_UPLOAD=$(wasmd tx wasm instantiate "$CODE_ID_HOST" "$INIT_MSG" --label "ica-host" $WASM_ARGS --admin $WASM_ADDR --from $WASM_KEY | jq -r '.txhash') && echo $HOST_TX_UPLOAD
 HOST_ADDR=$(wasmd query tx $HOST_TX_UPLOAD --output json | jq -r '.logs[0].events[0].attributes[0].value') && echo "HOST ADDR: $HOST_ADDR"
 # wasm1suhgf5svhu4usrurvxzlgn54ksxmn8gljarjtxqnapv8kjnp4nrss5maay
+
+# on osmosis?
+CONTROLLER_CONTRACT_TX=$(wasmd tx wasm store artifacts/simple_ica_controller.wasm --from $WASM_KEY --broadcast-mode sync $WASM_ARGS | jq -r '.txhash') && echo $CONTROLLER_CONTRACT_TX
+CODE_ID_CONTROLLER=$(wasmd query tx $CONTROLLER_CONTRACT_TX --output json | jq -r '.logs[0].events[-1].attributes[0].value') && echo $CODE_ID_CONTROLLER
+CONTROLLER_TX_UPLOAD=$(wasmd tx wasm instantiate "$CODE_ID_CONTROLLER" "{}" --label "ica-host" $WASM_ARGS --admin $WASM_ADDR --from $WASM_KEY | jq -r '.txhash') && echo $CONTROLLER_TX_UPLOAD
+CONTROLLER_ADDR=$(wasmd query tx $CONTROLLER_TX_UPLOAD --output json | jq -r '.logs[0].events[0].attributes[0].value') && echo "Controller ADDR: $CONTROLLER_ADDR"
+# 
+
+
+wasmd tx wasm execute $HOST_ADDR '{"account": {"channel_id": "channel-0"}}'
+
+
+wasmd q wasm contract-state smart $HOST_ADDR '{"account": {"channel_id": 0}}'
+wasmd q wasm contract-state smart $HOST_ADDR '{"list_accounts": {}}'
 
 
 
