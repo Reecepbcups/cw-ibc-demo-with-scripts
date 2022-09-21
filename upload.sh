@@ -1,5 +1,9 @@
 # https://github.com/Web3-Builders-Alliance/wba-mtw-testnet/blob/main/relayer/README.md
 
+# TODO: look into
+# https://github.com/Web3-Builders-Alliance/wba-twt-testnet
+
+
 # term egg forest panic canvas equip way artefact access lunar taste fringe
 
 # wasmd keys add relayer --recover --hd-path "m/44'/1234'/0'/2'" # 
@@ -84,8 +88,6 @@ ibc-relayer start -v --poll 2
 
 # osmosisd tx wasm execute $CONTROLLER_ADDR '{"check_remote_balance": {"channel_id": "connection-0"}}' --from relayer $OSMOSIS_ARGS
 
-
-wasmd q wasm contract-state smart $HOST_ADDR '{"account": {"channel_id": 0}}'
 wasmd q wasm contract-state smart $HOST_ADDR '{"list_accounts": {}}'
 
 
